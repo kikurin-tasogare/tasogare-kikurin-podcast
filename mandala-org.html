@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>組織曼荼羅｜Mandala株式会社きくりん</title>
+    <meta
+      name="description"
+      content="胎蔵界曼荼羅の構造をモチーフにした、Mandala株式会社きくりんの組織図。"
+    />
+    <meta name="theme-color" content="#0d0f0e" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d0f0e;
+        --surface: #151b17;
+        --text: #e6ece7;
+        --muted: #93a098;
+        --green: #1d9e75;
+        --green-deep: #0f5f46;
+        --gold: #b7a667;
+        --gold-soft: rgba(183, 166, 103, 0.32);
+        --line: rgba(230, 236, 231, 0.12);
+        --st-active: #1d9e75;
+        --st-done: #b7a667;
+        --st-waiting: #93c5fd;
+        --st-idea: #93a098;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        font-family: "Noto Serif JP", serif;
+        background:
+          radial-gradient(circle at 76% 8%, rgba(29, 158, 117, 0.1), transparent 28rem),
+          radial-gradient(circle at 8% 74%, rgba(15, 95, 70, 0.08), transparent 32rem),
+          var(--bg);
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      .page-header {
+        text-align: center;
+        padding: 2.4rem 1.2rem 0.6rem;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        margin: 0 0 1rem;
+        color: var(--green);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before,
+      .eyebrow::after {
+        width: 2.5rem;
+        height: 1px;
+        content: "";
+        background: currentColor;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+
+      .subtitle {
+        max-width: 34rem;
+        margin: 0.9rem auto 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.9;
+      }
+
+      .back-to-site {
+        display: inline-block;
+        margin-top: 1rem;
+        color: var(--muted);
+        font-size: 0.76rem;
+        letter-spacing: 0.1em;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 0.2rem;
+        transition: color 200ms ease, border-color 200ms ease;
+      }
+
+      .back-to-site:hover {
+        color: var(--green);
+        border-color: var(--green);
+      }
+
+      .mandala-stage {
+        position: relative;
+        width: min(760px, calc(100vw - 1.6rem));
+        margin: 1.6rem auto 0.8rem;
+      }
+
+      svg#orgMandala {
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: opacity 350ms ease, filter 350ms ease;
+      }
+
+      .mandala-stage.panel-open svg#orgMandala {
+        opacity: 0.18;
+        filter: blur(1px);
+        pointer-events: none;
+      }
+
+      .hit { cursor: pointer; }
+      .hit:hover .node-fill { filter: brightness(1.5); }
+      .hit:hover .node-ring { opacity: 1; }
+      .hit:hover .cell-bg { fill: rgba(29, 158, 117, 0.13); }
+
+      /* ─── 中央展開パネル ─── */
+      .detail-panel {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 5;
+        width: min(430px, 92%);
+        max-height: 88%;
+        overflow-y: auto;
+        padding: 1.8rem 1.9rem 1.6rem;
+        border: 1px solid var(--gold-soft);
+        background:
+          linear-gradient(160deg, rgba(29, 158, 117, 0.07), transparent 55%),
+          rgba(13, 15, 14, 0.97);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, -50%) scale(0.96);
+        transition: opacity 260ms ease, transform 260ms ease, visibility 0s linear 260ms;
+      }
+
+      .detail-panel.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+        transition: opacity 260ms ease, transform 260ms ease, visibility 0s;
+      }
+
+      .hit:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 2px;
+      }
+
+      .panel-hint {
+        margin: 0 0 0;
+        padding-top: 0.9rem;
+        color: rgba(147, 160, 152, 0.6);
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+      }
+
+      .panel-kicker {
+        margin: 0 0 0.5rem;
+        color: var(--green);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .panel-title {
+        margin: 0 0 0.9rem;
+        font-size: 1.5rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+      }
+
+      .panel-desc {
+        margin: 0 0 1.2rem;
+        color: var(--muted);
+        font-size: 0.85rem;
+        line-height: 1.9;
+      }
+
+      .panel-projects { display: grid; gap: 0.5rem; margin-bottom: 1.2rem; }
+
+      .panel-project {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 0.9rem;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.02);
+        font: inherit;
+        color: var(--text);
+        font-size: 0.86rem;
+        text-align: left;
+        cursor: pointer;
+        transition: border-color 200ms ease, background 200ms ease;
+      }
+
+      .panel-project:hover {
+        border-color: var(--green);
+        background: rgba(29, 158, 117, 0.08);
+      }
+
+      .status-dot {
+        flex-shrink: 0;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+      }
+
+      .panel-project .arrow {
+        margin-left: auto;
+        color: var(--green);
+        font-family: sans-serif;
+        font-size: 0.8rem;
+      }
+
+      .meta-grid {
+        display: grid;
+        gap: 0.6rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .meta-row {
+        display: grid;
+        grid-template-columns: 5.5rem 1fr;
+        gap: 0.8rem;
+        padding: 0.65rem 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.85rem;
+      }
+
+      .meta-row dt {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.74rem;
+        letter-spacing: 0.08em;
+        align-self: center;
+      }
+
+      .meta-row dd { margin: 0; line-height: 1.7; }
+
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.2rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.74rem;
+        letter-spacing: 0.06em;
+      }
+
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.65rem 1.4rem;
+        border: 1px solid var(--green);
+        background: transparent;
+        color: var(--green);
+        font-family: inherit;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        transition: background 200ms ease, color 200ms ease;
+      }
+
+      .back-btn:hover {
+        background: var(--green-deep);
+        color: var(--text);
+      }
+
+      /* ─── 凡例 ─── */
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.4rem;
+        padding: 0.6rem 1.2rem 0;
+        color: var(--muted);
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+      }
+
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+      }
+
+      .footer {
+        padding: 2.2rem 1.2rem 3rem;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+      }
+
+      .footer::before {
+        display: block;
+        width: 1px;
+        height: 2.6rem;
+        margin: 0 auto 1.2rem;
+        content: "";
+        background: var(--green);
+      }
+
+      @media (max-width: 600px) {
+        .panel-title { font-size: 1.25rem; }
+        .detail-panel { padding: 1.4rem 1.3rem 1.2rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="page-header">
+      <p class="eyebrow">Organization Mandala</p>
+      <h1>組織曼荼羅</h1>
+      <p class="subtitle">
+        胎蔵界曼荼羅の構造になぞらえた、Mandala株式会社きくりんの組織図。
+        部署をタップすると、詳細が中央に展開します。
+      </p>
+      <a class="back-to-site" href="./index.html">← 黄昏きくりんサイトへ</a>
+    </header>
+
+    <main>
+      <div class="mandala-stage" id="stage">
+        <svg id="orgMandala" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mandala株式会社きくりんの組織曼荼羅。部署をタップして詳細を表示">
+          <defs>
+            <radialGradient id="bgGrad" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="#10160f" />
+              <stop offset="100%" stop-color="#070908" />
+            </radialGradient>
+            <radialGradient id="coreGrad" cx="50%" cy="42%" r="60%">
+              <stop offset="0%" stop-color="#155a42" />
+              <stop offset="100%" stop-color="#0a1410" />
+            </radialGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="4" result="b" />
+              <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+
+          <!-- 外金剛部院：正方形フレーム -->
+          <rect x="4" y="4" width="712" height="712" fill="url(#bgGrad)" stroke="rgba(183,166,103,0.55)" stroke-width="1.6" />
+          <rect x="12" y="12" width="696" height="696" fill="none" stroke="rgba(183,166,103,0.18)" stroke-width="0.8" />
+          <rect x="88" y="88" width="544" height="544" fill="none" stroke="rgba(29,158,117,0.22)" stroke-width="1" />
+
+          <!-- 四隅の荘厳 -->
+          <g id="corners"></g>
+
+          <!-- 外院の格子（プロジェクト） -->
+          <g id="cells"></g>
+
+          <!-- 同心円 -->
+          <circle cx="360" cy="360" r="258" fill="none" stroke="rgba(183,166,103,0.14)" stroke-width="1" />
+          <circle cx="360" cy="360" r="236" fill="none" stroke="rgba(29,158,117,0.14)" stroke-width="0.8" />
+          <circle cx="360" cy="360" r="118" fill="none" stroke="rgba(183,166,103,0.2)" stroke-width="0.8" />
+
+          <!-- 結線 -->
+          <g id="spokes" stroke="rgba(183,166,103,0.14)" stroke-width="1"></g>
+
+          <!-- 中台八葉院：部署ノード -->
+          <g id="nodes"></g>
+
+          <!-- 中心：黄昏マーク -->
+          <g id="core" class="hit">
+            <circle cx="360" cy="360" r="86" fill="none" stroke="rgba(29,158,117,0.14)" stroke-width="8" filter="url(#glow)" opacity="0.6" />
+            <circle cx="360" cy="360" r="80" fill="url(#coreGrad)" stroke="rgba(183,166,103,0.6)" stroke-width="1.4" class="node-fill" />
+            <circle cx="360" cy="360" r="68" fill="none" stroke="rgba(183,166,103,0.25)" stroke-width="0.8" />
+            <g fill="none" stroke="rgba(183,166,103,0.4)" stroke-width="0.8" id="corePetals"></g>
+            <text x="360" y="368" text-anchor="middle" fill="#e6ece7" font-size="26" font-family="'Noto Serif JP',serif" letter-spacing="0.12em">黄昏</text>
+            <text x="360" y="392" text-anchor="middle" fill="rgba(183,166,103,0.8)" font-size="8" font-family="'Cormorant Garamond',serif" letter-spacing="0.22em">TASOGARE KIKURIN</text>
+          </g>
+        </svg>
+
+        <!-- 中央展開パネル -->
+        <div class="detail-panel" id="panel">
+          <p class="panel-kicker" id="panelKicker"></p>
+          <h2 class="panel-title" id="panelTitle"></h2>
+          <p class="panel-desc" id="panelDesc"></p>
+          <div id="panelBody"></div>
+          <button class="back-btn" type="button" id="backBtn">← 戻る</button>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><i class="status-dot" style="background:var(--st-active); display:inline-block; width:.5rem; height:.5rem; border-radius:50%;"></i>稼働中</span>
+        <span><i style="background:var(--st-done); display:inline-block; width:.5rem; height:.5rem; border-radius:50%;"></i>完了</span>
+        <span><i style="background:var(--st-waiting); display:inline-block; width:.5rem; height:.5rem; border-radius:50%;"></i>確認待ち</span>
+        <span><i style="background:var(--st-idea); display:inline-block; width:.5rem; height:.5rem; border-radius:50%;"></i>構想中</span>
+        <span style="color:rgba(147,160,152,0.6);">◌ 点線＝空室</span>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>Mandala株式会社きくりん — 組織曼荼羅</p>
+    </footer>
+
+    <script>
+      const STATUS = {
+        active: { label: "稼働中", color: "var(--st-active)", raw: "#1d9e75" },
+        done: { label: "完了", color: "var(--st-done)", raw: "#b7a667" },
+        waiting: { label: "確認待ち", color: "var(--st-waiting)", raw: "#93c5fd" },
+        idea: { label: "構想中", color: "var(--st-idea)", raw: "#93a098" },
+      };
+
+      const DEPTS = {
+        hasshin: {
+          name: "発信",
+          en: "Broadcast",
+          desc: "対外発信全般。本丸はポッドキャスト「黄昏キクリン」。Instagram・動画・写真はすべてポッドキャストへの導線。音声ファースト。",
+        },
+        senryaku: {
+          name: "戦略",
+          en: "Strategy",
+          desc: "会社とチャンネルの方向性、今週・今月の優先順位を見る。空室部署への将来配置を提案する（決定は社長）。",
+        },
+        security: {
+          name: "セキュリティ",
+          en: "Security",
+          desc: "APIキー・パスワードの扱い、契約・個人情報・公開範囲の管理。炎上・誤投稿の観点でのリスクチェック。",
+        },
+        okane: {
+          name: "お金",
+          en: "Finance",
+          desc: "OpenAI・VPSなどのコスト把握、月次上限の確認、収益・請求・予算の整理。発信コストの抑制も担当。",
+        },
+        uranai: {
+          name: "占い",
+          en: "Divination",
+          desc: "タイミング・テーマ・ペースの参考。数秘・星・直感の言語化。他部署への「天気予報」役（実行判断は社長と戦略）。",
+        },
+        vacant6: { name: "空室-06", en: "Vacant", vacant: true, desc: "未設定の部屋。将来の配置は戦略部署が提案し、社長が決める。いまは触らない。" },
+        vacant7: { name: "空室-07", en: "Vacant", vacant: true, desc: "未設定の部屋。将来の配置は戦略部署が提案し、社長が決める。いまは触らない。" },
+        vacant8: { name: "空室-08", en: "Vacant", vacant: true, desc: "未設定の部屋。将来の配置は戦略部署が提案し、社長が決める。いまは触らない。" },
+      };
+
+      const PROJECTS = [
+        { id: "podcast", dept: "hasshin", name: "黄昏キクリン Podcast", short: "Podcast", status: "active", ai: "かーくん", note: "主商品。第17回まで配信。文案は音声→要約が標準。" },
+        { id: "brandsite", dept: "hasshin", name: "ブランドサイト", short: "ブランドサイト", status: "done", ai: "かーくん", note: "黄昏きくりん公式サイト。About・三つのしない・Spotifyプレイヤーを実装済み。" },
+        { id: "mandala-db", dept: "hasshin", name: "曼荼羅ダッシュボード", short: "曼荼羅DB", status: "waiting", ai: "クロちゃん", note: "佑哉の曼荼羅。クロちゃん設計をブランドサイトに統合。社長確認待ち。" },
+        { id: "instagram", dept: "hasshin", name: "Instagram 導線", short: "Instagram", status: "idea", ai: "未定", note: "黄昏写真の発信。ポッドキャストへの導線として設計予定。" },
+        { id: "priority", dept: "senryaku", name: "優先順位レビュー", short: "優先順位", status: "active", ai: "かーくん", note: "今週・今月の優先順位の整理。podcast 最優先の原則を維持。" },
+        { id: "vacancy-plan", dept: "senryaku", name: "空室配置プラン", short: "空室配置", status: "idea", ai: "かーくん", note: "空室-06〜08 の将来配置の提案づくり。決定は社長。" },
+        { id: "api-keys", dept: "security", name: "API・契約管理", short: "API・契約", status: "active", ai: "かーくん", note: "APIキー・パスワードの扱い。秘密情報は GitHub に上げない。" },
+        { id: "risk-check", dept: "security", name: "リスクチェック", short: "リスク", status: "active", ai: "かーくん", note: "公開前の炎上・誤投稿チェック。個人情報と公開範囲の確認。" },
+        { id: "cost", dept: "okane", name: "コスト管理", short: "コスト管理", status: "active", ai: "かーくん", note: "OpenAI 月$10 上限などの月次確認。要点メモ・先頭1分文字起こしで抑制。" },
+        { id: "budget", dept: "okane", name: "予算・収益整理", short: "予算・収益", status: "idea", ai: "かーくん", note: "収益・請求・予算の整理。仕組みづくりはこれから。" },
+        { id: "forecast", dept: "uranai", name: "タイミング天気予報", short: "天気予報", status: "active", ai: "かーくん", note: "テーマ・ペース・タイミングの参考情報を他部署へ。断定しすぎない。" },
+        { id: "numerology", dept: "uranai", name: "数秘・星の言語化", short: "数秘・星", status: "active", ai: "ノートくん", note: "癸・九紫火星・数秘7/11。NotebookLM のコンテキストと共進化。" },
+      ];
+
+      const CORE = {
+        kicker: "Center",
+        title: "黄昏（中心）",
+        desc: "すべての意思決定の軸。部署ではなく、会社の中心。ここから8つの部屋へ広がり、外側の格子（プロジェクト）につながっていく。",
+      };
+
+      const svgNS = "http://www.w3.org/2000/svg";
+      const $ = (id) => document.getElementById(id);
+
+      function el(tag, attrs, parent) {
+        const node = document.createElementNS(svgNS, tag);
+        for (const key in attrs) node.setAttribute(key, attrs[key]);
+        if (parent) parent.appendChild(node);
+        return node;
+      }
+
+      /* ─── 四隅の荘厳（金剛杵風のひし形） ─── */
+      const cornersGroup = $("corners");
+      [[51, 51], [669, 51], [51, 669], [669, 669]].forEach(([cx, cy]) => {
+        el("rect", { x: 20, y: 20, width: 62, height: 62, fill: "none", stroke: "rgba(183,166,103,0.22)", "stroke-width": 0.8, transform: `translate(${cx - 51} ${cy - 51})` }, cornersGroup);
+        el("rect", { x: cx - 13, y: cy - 13, width: 26, height: 26, fill: "rgba(183,166,103,0.08)", stroke: "rgba(183,166,103,0.45)", "stroke-width": 0.8, transform: `rotate(45 ${cx} ${cy})` }, cornersGroup);
+        el("circle", { cx, cy, r: 3, fill: "rgba(29,158,117,0.7)" }, cornersGroup);
+      });
+
+      /* ─── 外院の格子セル ─── */
+      const SIDES = {
+        top: PROJECTS.filter((p) => p.dept === "hasshin"),
+        right: PROJECTS.filter((p) => p.dept === "senryaku"),
+        bottom: PROJECTS.filter((p) => ["security", "okane"].includes(p.dept)),
+        left: PROJECTS.filter((p) => p.dept === "uranai"),
+      };
+
+      const cellsGroup = $("cells");
+
+      function makeCell(project, x, y, w, h, vertical) {
+        const g = el("g", { class: "hit" }, cellsGroup);
+        g.dataset.project = project.id;
+        el("rect", { x, y, width: w, height: h, fill: "rgba(255,255,255,0.015)", stroke: "rgba(183,166,103,0.28)", "stroke-width": 0.8, class: "cell-bg" }, g);
+
+        const cx = x + w / 2;
+        const cy = y + h / 2;
+        const deptName = DEPTS[project.dept].name;
+        const dot = STATUS[project.status].raw;
+
+        const textGroup = el("g", vertical ? { transform: `rotate(${x < 360 ? -90 : 90} ${cx} ${cy})` } : {}, g);
+        el("circle", { cx, cy: cy - 22, r: 3, fill: dot }, textGroup);
+        const kicker = el("text", { x: cx, y: cy - 6, "text-anchor": "middle", fill: "rgba(147,160,152,0.85)", "font-size": 8.5, "font-family": "'Cormorant Garamond',serif", "letter-spacing": "0.14em" }, textGroup);
+        kicker.textContent = deptName;
+        const label = el("text", { x: cx, y: cy + 13, "text-anchor": "middle", fill: "#e6ece7", "font-size": 11.5, "font-family": "'Noto Serif JP',serif", "letter-spacing": "0.04em" }, textGroup);
+        label.textContent = project.short;
+      }
+
+      SIDES.top.forEach((p, i) => makeCell(p, 88 + i * 136, 16, 136, 70, false));
+      SIDES.bottom.forEach((p, i) => makeCell(p, 88 + i * 136, 634, 136, 70, false));
+      SIDES.right.forEach((p, i) => makeCell(p, 634, 88 + i * 272, 70, 272, true));
+      SIDES.left.forEach((p, i) => makeCell(p, 16, 88 + i * 272, 70, 272, true));
+
+      /* ─── 中台八葉院：部署ノード ─── */
+      const ORDER = ["hasshin", "senryaku", "security", "okane", "uranai", "vacant6", "vacant7", "vacant8"];
+      const nodesGroup = $("nodes");
+      const spokesGroup = $("spokes");
+
+      ORDER.forEach((deptId, i) => {
+        const angle = (-90 + i * 45) * (Math.PI / 180);
+        const cx = 360 + 172 * Math.cos(angle);
+        const cy = 360 + 172 * Math.sin(angle);
+        const dept = DEPTS[deptId];
+        const vacant = !!dept.vacant;
+
+        el("line", { x1: 360 + 84 * Math.cos(angle), y1: 360 + 84 * Math.sin(angle), x2: cx, y2: cy, opacity: vacant ? 0.4 : 1 }, spokesGroup);
+
+        const g = el("g", { class: "hit", opacity: vacant ? 0.45 : 1 }, nodesGroup);
+        g.dataset.dept = deptId;
+
+        // 蓮弁（中心から外向きに伸びる花びら。回転角は放射方向に合わせる）
+        el("ellipse", {
+          cx, cy, rx: 34, ry: 60,
+          fill: vacant ? "none" : "rgba(29,158,117,0.05)",
+          stroke: vacant ? "rgba(147,160,152,0.5)" : "rgba(183,166,103,0.4)",
+          "stroke-width": 0.9,
+          "stroke-dasharray": vacant ? "4 4" : "none",
+          transform: `rotate(${i * 45} ${cx} ${cy})`,
+        }, g);
+
+        el("circle", { cx, cy, r: 44, fill: vacant ? "rgba(13,15,14,0.7)" : "rgba(10,20,16,0.92)", stroke: vacant ? "rgba(147,160,152,0.5)" : "rgba(29,158,117,0.55)", "stroke-width": 1.1, "stroke-dasharray": vacant ? "4 4" : "none", class: "node-fill" }, g);
+        el("circle", { cx, cy, r: 50, fill: "none", stroke: vacant ? "rgba(147,160,152,0.3)" : "rgba(183,166,103,0.45)", "stroke-width": 0.8, opacity: 0.5, class: "node-ring", "stroke-dasharray": vacant ? "3 5" : "none" }, g);
+
+        const name = el("text", { x: cx, y: cy + (vacant ? 4 : 0), "text-anchor": "middle", fill: vacant ? "rgba(147,160,152,0.9)" : "#e6ece7", "font-size": vacant ? 11 : 14, "font-family": "'Noto Serif JP',serif", "letter-spacing": "0.08em" }, g);
+        name.textContent = dept.name;
+
+        if (!vacant) {
+          const en = el("text", { x: cx, y: cy + 16, "text-anchor": "middle", fill: "rgba(183,166,103,0.75)", "font-size": 7, "font-family": "'Cormorant Garamond',serif", "letter-spacing": "0.18em" }, g);
+          en.textContent = dept.en.toUpperCase();
+        }
+      });
+
+      /* ─── 中心の小花弁 ─── */
+      const corePetals = $("corePetals");
+      for (let i = 0; i < 8; i++) {
+        el("ellipse", { cx: 360, cy: 308, rx: 10, ry: 22, transform: `rotate(${i * 45} 360 360)` }, corePetals);
+      }
+
+      /* ─── パネル制御 ─── */
+      const stage = $("stage");
+      const panel = $("panel");
+      const backBtn = $("backBtn");
+
+      function openPanel() {
+        panel.classList.add("visible");
+        stage.classList.add("panel-open");
+        panel.scrollTop = 0;
+      }
+
+      function closePanel() {
+        panel.classList.remove("visible");
+        stage.classList.remove("panel-open");
+      }
+
+      function showDept(deptId) {
+        const dept = DEPTS[deptId];
+        $("panelKicker").textContent = dept.vacant ? "Vacant Room" : dept.en;
+        $("panelTitle").textContent = dept.vacant ? dept.name + "（空室）" : dept.name + "部署";
+        $("panelDesc").textContent = dept.desc;
+
+        const body = $("panelBody");
+        body.innerHTML = "";
+        const projects = PROJECTS.filter((p) => p.dept === deptId);
+
+        if (projects.length > 0) {
+          const wrap = document.createElement("div");
+          wrap.className = "panel-projects";
+          projects.forEach((p) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "panel-project";
+            btn.innerHTML = `<span class="status-dot" style="background:${STATUS[p.status].raw}"></span>${p.name}<span class="arrow">→</span>`;
+            btn.addEventListener("click", () => showProject(p.id, true));
+            wrap.appendChild(btn);
+          });
+          body.appendChild(wrap);
+        } else if (dept.vacant) {
+          const note = document.createElement("p");
+          note.className = "panel-desc";
+          note.textContent = "プロジェクトはまだありません。";
+          body.appendChild(note);
+        }
+
+        const hint = document.createElement("p");
+        hint.className = "panel-hint";
+        hint.textContent = dept.vacant
+          ? "Esc キー・背景クリックでも閉じられます"
+          : "プロジェクトをタップすると詳細が見られます";
+        body.appendChild(hint);
+
+        backBtn.textContent = "← 曼荼羅へ戻る";
+        backBtn.onclick = closePanel;
+        openPanel();
+      }
+
+      /* fromDept: 部署パネル経由で開いたときだけ、戻る先を部署にする */
+      function showProject(projectId, fromDept) {
+        const p = PROJECTS.find((x) => x.id === projectId);
+        const dept = DEPTS[p.dept];
+        const st = STATUS[p.status];
+
+        $("panelKicker").textContent = dept.name + " — Project";
+        $("panelTitle").textContent = p.name;
+        $("panelDesc").textContent = p.note;
+
+        $("panelBody").innerHTML = `
+          <dl class="meta-grid">
+            <div class="meta-row">
+              <dt>状態</dt>
+              <dd><span class="status-chip" style="border:1px solid ${st.raw}55; color:${st.raw};"><span class="status-dot" style="background:${st.raw}"></span>${st.label}</span></dd>
+            </div>
+            <div class="meta-row"><dt>担当AI</dt><dd>${p.ai}</dd></div>
+            <div class="meta-row"><dt>部署</dt><dd>${dept.name}</dd></div>
+          </dl>
+        `;
+
+        if (fromDept) {
+          backBtn.textContent = "← " + dept.name + "部署へ戻る";
+          backBtn.onclick = () => showDept(p.dept);
+        } else {
+          backBtn.textContent = "← 曼荼羅へ戻る";
+          backBtn.onclick = closePanel;
+        }
+        openPanel();
+      }
+
+      function showCore() {
+        $("panelKicker").textContent = CORE.kicker;
+        $("panelTitle").textContent = CORE.title;
+        $("panelDesc").textContent = CORE.desc;
+        $("panelBody").innerHTML = "";
+        backBtn.textContent = "← 曼荼羅へ戻る";
+        backBtn.onclick = closePanel;
+        openPanel();
+      }
+
+      backBtn.onclick = closePanel;
+
+      /* クリック＋キーボードの両対応 */
+      function activate(element, handler, label) {
+        element.addEventListener("click", handler);
+        element.setAttribute("tabindex", "0");
+        element.setAttribute("role", "button");
+        if (label) element.setAttribute("aria-label", label);
+        element.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            handler();
+          }
+        });
+      }
+
+      document.querySelectorAll("#nodes .hit").forEach((node) => {
+        const dept = DEPTS[node.dataset.dept];
+        activate(node, () => showDept(node.dataset.dept), dept.name + "の詳細を開く");
+      });
+
+      document.querySelectorAll("#cells .hit").forEach((cell) => {
+        const p = PROJECTS.find((x) => x.id === cell.dataset.project);
+        activate(cell, () => showProject(cell.dataset.project), p.name + "の詳細を開く");
+      });
+
+      activate($("core"), showCore, "中心（黄昏）の説明を開く");
+
+      /* 背景クリックで閉じる（パネル表示中、SVG は pointer-events:none） */
+      stage.addEventListener("click", (event) => {
+        if (event.target === stage) closePanel();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closePanel();
+      });
+
+      /* ディープリンク: ?dept=hasshin / ?project=podcast */
+      const params = new URLSearchParams(location.search);
+      const linkProject = params.get("project");
+      const linkDept = params.get("dept");
+      if (linkProject && PROJECTS.some((p) => p.id === linkProject)) {
+        showProject(linkProject);
+      } else if (linkDept && DEPTS[linkDept]) {
+        showDept(linkDept);
+      }
+    </script>
+  </body>
+</html>

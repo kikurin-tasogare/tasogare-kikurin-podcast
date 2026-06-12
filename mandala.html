@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>佑哉の曼荼羅｜黄昏きくりん</title>
+    <meta
+      name="description"
+      content="クロちゃんとつくった、佑哉の曼荼羅ダッシュボード。ノードをタップして、気づきを刻む。"
+    />
+    <meta name="theme-color" content="#0d0f0e" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=7" />
+    <link rel="stylesheet" href="./mandala.css?v=2" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="sacred-lines sacred-lines-left" aria-hidden="true"></div>
+    <div class="sacred-lines sacred-lines-right" aria-hidden="true"></div>
+
+    <header class="hero mandala-page">
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a class="brand" href="./index.html" aria-label="黄昏きくりん ホーム">
+          <span>黄昏</span>
+          <span class="brand-name">Tasogare Kikurin</span>
+        </a>
+        <div class="nav-links">
+          <a href="./index.html#about">きくりんとは</a>
+          <a href="./index.html#mandala" aria-current="page">曼荼羅</a>
+          <a href="./index.html#podcast">ポッドキャスト</a>
+          <a href="./index.html#links">リンク</a>
+        </div>
+      </nav>
+
+      <div class="mandala-page-header">
+        <p class="eyebrow">Self Mandala</p>
+        <h1>佑哉の曼荼羅</h1>
+        <p class="mandala-subtitle">
+          自分という宇宙を描くデータベース。ノードをタップして記録を見る。
+          気づいたことは、下の入力欄から曼荼羅に刻めます。
+        </p>
+        <p class="mandala-credit">Designed by クロちゃん</p>
+      </div>
+    </header>
+
+    <main class="mandala-page">
+      <div class="mandala-wrap">
+        <svg class="mandala-dashboard" viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="佑哉の曼荼羅。各ノードをタップして詳細を表示">
+          <defs>
+            <filter id="glow-gold">
+              <feGaussianBlur stdDeviation="5" result="b" />
+              <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+            <filter id="glow-sm">
+              <feGaussianBlur stdDeviation="3" result="b" />
+              <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+            <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#12080e" />
+              <stop offset="100%" stop-color="#050305" />
+            </radialGradient>
+            <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#0f2a1f" />
+              <stop offset="100%" stop-color="#0a100e" />
+            </radialGradient>
+          </defs>
+
+          <circle cx="280" cy="280" r="268" fill="url(#bgGrad)" stroke="rgba(29,158,117,0.28)" stroke-width="1.5" />
+          <circle cx="280" cy="280" r="252" fill="none" stroke="rgba(183,166,103,0.06)" stroke-width="1" />
+          <circle cx="280" cy="280" r="228" fill="none" stroke="rgba(183,166,103,0.08)" stroke-width="0.8" />
+          <circle cx="280" cy="280" r="180" fill="none" stroke="rgba(29,158,117,0.12)" stroke-width="1" />
+          <circle cx="280" cy="280" r="130" fill="none" stroke="rgba(29,158,117,0.16)" stroke-width="1" />
+          <circle cx="280" cy="280" r="80" fill="none" stroke="rgba(183,166,103,0.22)" stroke-width="1" />
+
+          <g opacity="0.06" stroke="#b7a667" stroke-width="1" fill="none">
+            <line x1="280" y1="52" x2="280" y2="508" />
+            <line x1="52" y1="280" x2="508" y2="280" />
+            <line x1="118" y1="118" x2="442" y2="442" />
+            <line x1="442" y1="118" x2="118" y2="442" />
+          </g>
+
+          <g fill="rgba(183,166,103,0.3)" filter="url(#glow-sm)">
+            <circle cx="280" cy="28" r="2.2" />
+            <circle cx="395" cy="56" r="1.8" />
+            <circle cx="484" cy="136" r="1.8" />
+            <circle cx="532" cy="252" r="2.2" />
+            <circle cx="504" cy="395" r="1.8" />
+            <circle cx="424" cy="484" r="1.8" />
+            <circle cx="308" cy="532" r="2.2" />
+            <circle cx="165" cy="504" r="1.8" />
+            <circle cx="76" cy="424" r="1.8" />
+            <circle cx="28" cy="308" r="2.2" />
+            <circle cx="56" cy="165" r="1.8" />
+            <circle cx="136" cy="76" r="1.8" />
+          </g>
+
+          <g class="node-group" onclick="selectNode('vision')" id="nd-vision">
+            <circle cx="280" cy="70" r="36" fill="rgba(96,165,250,0.06)" class="node-circle" />
+            <circle cx="280" cy="70" r="36" fill="none" stroke="rgba(96,165,250,0.4)" stroke-width="1" class="node-ring" opacity="0.6" />
+            <circle cx="280" cy="70" r="28" fill="rgba(96,165,250,0.08)" />
+            <circle cx="280" cy="70" r="20" fill="rgba(12,20,35,0.9)" />
+            <text x="280" y="65" text-anchor="middle" fill="#93c5fd" font-size="9" font-family="'Noto Serif JP',serif">ビジョン</text>
+            <text x="280" y="77" text-anchor="middle" fill="#93c5fd" font-size="9" font-family="'Noto Serif JP',serif">未来</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('project')" id="nd-project">
+            <circle cx="430" cy="130" r="36" fill="rgba(74,42,107,0.08)" class="node-circle" />
+            <circle cx="430" cy="130" r="36" fill="none" stroke="rgba(179,157,219,0.4)" stroke-width="1" class="node-ring" opacity="0.6" />
+            <circle cx="430" cy="130" r="28" fill="rgba(74,42,107,0.1)" />
+            <circle cx="430" cy="130" r="20" fill="rgba(12,8,20,0.9)" />
+            <text x="430" y="125" text-anchor="middle" fill="#b39ddb" font-size="9" font-family="'Noto Serif JP',serif">プロ</text>
+            <text x="430" y="137" text-anchor="middle" fill="#b39ddb" font-size="9" font-family="'Noto Serif JP',serif">ジェクト</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('relation')" id="nd-relation">
+            <circle cx="490" cy="280" r="36" fill="rgba(78,139,107,0.07)" class="node-circle" />
+            <circle cx="490" cy="280" r="36" fill="none" stroke="rgba(111,207,151,0.4)" stroke-width="1" class="node-ring" opacity="0.6" />
+            <circle cx="490" cy="280" r="28" fill="rgba(78,139,107,0.08)" />
+            <circle cx="490" cy="280" r="20" fill="rgba(8,18,14,0.9)" />
+            <text x="490" y="275" text-anchor="middle" fill="#6fcf97" font-size="9" font-family="'Noto Serif JP',serif">人間</text>
+            <text x="490" y="287" text-anchor="middle" fill="#6fcf97" font-size="9" font-family="'Noto Serif JP',serif">関係</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('daily')" id="nd-daily">
+            <circle cx="430" cy="430" r="36" fill="rgba(78,139,107,0.06)" class="node-circle" />
+            <circle cx="430" cy="430" r="36" fill="none" stroke="rgba(111,207,151,0.3)" stroke-width="1" class="node-ring" opacity="0.5" />
+            <circle cx="430" cy="430" r="28" fill="rgba(78,139,107,0.07)" />
+            <circle cx="430" cy="430" r="20" fill="rgba(8,18,14,0.9)" />
+            <text x="430" y="425" text-anchor="middle" fill="#6fcf97" font-size="9" font-family="'Noto Serif JP',serif">日常</text>
+            <text x="430" y="437" text-anchor="middle" fill="#6fcf97" font-size="9" font-family="'Noto Serif JP',serif">記録</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('insight')" id="nd-insight">
+            <circle cx="280" cy="490" r="36" fill="rgba(183,166,103,0.05)" class="node-circle" />
+            <circle cx="280" cy="490" r="36" fill="none" stroke="rgba(183,166,103,0.3)" stroke-width="1" class="node-ring" opacity="0.5" />
+            <circle cx="280" cy="490" r="28" fill="rgba(183,166,103,0.06)" />
+            <circle cx="280" cy="490" r="20" fill="rgba(14,12,6,0.9)" />
+            <text x="280" y="485" text-anchor="middle" fill="#b7a667" font-size="9" font-family="'Noto Serif JP',serif">気づき</text>
+            <text x="280" y="497" text-anchor="middle" fill="#b7a667" font-size="9" font-family="'Noto Serif JP',serif">メモ</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('past')" id="nd-past">
+            <circle cx="130" cy="430" r="36" fill="rgba(139,32,32,0.06)" class="node-circle" />
+            <circle cx="130" cy="430" r="36" fill="none" stroke="rgba(224,112,112,0.3)" stroke-width="1" class="node-ring" opacity="0.5" />
+            <circle cx="130" cy="430" r="28" fill="rgba(139,32,32,0.07)" />
+            <circle cx="130" cy="430" r="20" fill="rgba(18,8,8,0.9)" />
+            <text x="130" y="425" text-anchor="middle" fill="#e07070" font-size="9" font-family="'Noto Serif JP',serif">過去</text>
+            <text x="130" y="437" text-anchor="middle" fill="#e07070" font-size="9" font-family="'Noto Serif JP',serif">経験</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('destiny')" id="nd-destiny">
+            <circle cx="70" cy="280" r="36" fill="rgba(139,32,32,0.07)" class="node-circle" />
+            <circle cx="70" cy="280" r="36" fill="none" stroke="rgba(224,112,112,0.4)" stroke-width="1" class="node-ring" opacity="0.6" />
+            <circle cx="70" cy="280" r="28" fill="rgba(139,32,32,0.08)" />
+            <circle cx="70" cy="280" r="20" fill="rgba(18,8,8,0.9)" />
+            <text x="70" y="275" text-anchor="middle" fill="#e07070" font-size="9" font-family="'Noto Serif JP',serif">宿命</text>
+            <text x="70" y="287" text-anchor="middle" fill="#e07070" font-size="9" font-family="'Noto Serif JP',serif">占術</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('art')" id="nd-art">
+            <circle cx="130" cy="130" r="36" fill="rgba(29,158,117,0.07)" class="node-circle" />
+            <circle cx="130" cy="130" r="36" fill="none" stroke="rgba(29,158,117,0.4)" stroke-width="1" class="node-ring" opacity="0.6" />
+            <circle cx="130" cy="130" r="28" fill="rgba(29,158,117,0.08)" />
+            <circle cx="130" cy="130" r="20" fill="rgba(6,16,16,0.9)" />
+            <text x="130" y="125" text-anchor="middle" fill="#1d9e75" font-size="9" font-family="'Noto Serif JP',serif">音楽</text>
+            <text x="130" y="137" text-anchor="middle" fill="#1d9e75" font-size="9" font-family="'Noto Serif JP',serif">写真</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('sense')" id="nd-sense">
+            <circle cx="372" cy="188" r="28" fill="rgba(29,158,117,0.08)" class="node-circle" />
+            <circle cx="372" cy="188" r="28" fill="none" stroke="rgba(29,158,117,0.35)" stroke-width="1" class="node-ring" opacity="0.55" />
+            <circle cx="372" cy="188" r="21" fill="rgba(6,16,16,0.92)" />
+            <text x="372" y="184" text-anchor="middle" fill="#1d9e75" font-size="8.5" font-family="'Noto Serif JP',serif">感性</text>
+            <text x="372" y="195" text-anchor="middle" fill="#1d9e75" font-size="8.5" font-family="'Noto Serif JP',serif">美意識</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('thought')" id="nd-thought">
+            <circle cx="372" cy="372" r="28" fill="rgba(180,140,80,0.07)" class="node-circle" />
+            <circle cx="372" cy="372" r="28" fill="none" stroke="rgba(212,169,106,0.35)" stroke-width="1" class="node-ring" opacity="0.55" />
+            <circle cx="372" cy="372" r="21" fill="rgba(14,12,6,0.92)" />
+            <text x="372" y="368" text-anchor="middle" fill="#d4a96a" font-size="8.5" font-family="'Noto Serif JP',serif">思考</text>
+            <text x="372" y="379" text-anchor="middle" fill="#d4a96a" font-size="8.5" font-family="'Noto Serif JP',serif">パターン</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('value')" id="nd-value">
+            <circle cx="188" cy="372" r="28" fill="rgba(139,32,32,0.07)" class="node-circle" />
+            <circle cx="188" cy="372" r="28" fill="none" stroke="rgba(224,112,112,0.35)" stroke-width="1" class="node-ring" opacity="0.55" />
+            <circle cx="188" cy="372" r="21" fill="rgba(18,8,8,0.92)" />
+            <text x="188" y="376" text-anchor="middle" fill="#e07070" font-size="8.5" font-family="'Noto Serif JP',serif">価値観</text>
+          </g>
+
+          <g class="node-group" onclick="selectNode('yuki')" id="nd-yuki">
+            <circle cx="188" cy="188" r="28" fill="rgba(78,139,107,0.08)" class="node-circle" />
+            <circle cx="188" cy="188" r="28" fill="none" stroke="rgba(111,207,151,0.35)" stroke-width="1" class="node-ring" opacity="0.55" />
+            <circle cx="188" cy="188" r="21" fill="rgba(8,18,14,0.92)" />
+            <text x="188" y="184" text-anchor="middle" fill="#6fcf97" font-size="8.5" font-family="'Noto Serif JP',serif">祐希</text>
+            <text x="188" y="195" text-anchor="middle" fill="#6fcf97" font-size="8.5" font-family="'Noto Serif JP',serif">ちゃん</text>
+          </g>
+
+          <circle cx="280" cy="280" r="58" fill="url(#centerGrad)" stroke="rgba(29,158,117,0.5)" stroke-width="1.5" filter="url(#glow-gold)" class="node-group" style="cursor:pointer" onclick="selectNode('core')" />
+          <circle cx="280" cy="280" r="50" fill="rgba(29,158,117,0.06)" stroke="rgba(29,158,117,0.3)" stroke-width="0.8" />
+          <circle cx="280" cy="280" r="40" fill="rgba(29,158,117,0.04)" stroke="rgba(183,166,103,0.2)" stroke-width="0.6" />
+          <text x="280" y="272" text-anchor="middle" fill="#e6ece7" font-size="14" font-family="'Noto Serif JP',serif" font-weight="300" style="cursor:pointer" onclick="selectNode('core')">佑哉</text>
+          <text x="280" y="290" text-anchor="middle" fill="#93a098" font-size="8.5" font-family="'Cormorant Garamond',serif" letter-spacing="0.1em" style="cursor:pointer" onclick="selectNode('core')">YUYA · 44</text>
+          <circle cx="280" cy="280" r="62" fill="none" stroke="rgba(29,158,117,0.12)" stroke-width="6" filter="url(#glow-gold)" opacity="0.5" />
+
+          <g stroke="rgba(183,166,103,0.12)" stroke-width="1" fill="none">
+            <line x1="280" y1="222" x2="280" y2="70" />
+            <line x1="338" y1="222" x2="430" y2="130" />
+            <line x1="338" y1="280" x2="490" y2="280" />
+            <line x1="338" y1="338" x2="430" y2="430" />
+            <line x1="280" y1="338" x2="280" y2="490" />
+            <line x1="222" y1="338" x2="130" y2="430" />
+            <line x1="222" y1="280" x2="70" y2="280" />
+            <line x1="222" y1="222" x2="130" y2="130" />
+            <line x1="308" y1="244" x2="372" y2="188" />
+            <line x1="308" y1="316" x2="372" y2="372" />
+            <line x1="252" y1="316" x2="188" y2="372" />
+            <line x1="252" y1="244" x2="188" y2="188" />
+          </g>
+        </svg>
+      </div>
+
+      <div class="mandala-panel">
+        <div class="detail-box" id="detailBox">
+          <div class="detail-title" id="detailTitle"></div>
+          <div class="detail-desc" id="detailDesc"></div>
+          <div class="detail-notes" id="detailNotes"></div>
+        </div>
+      </div>
+
+      <hr class="mandala-divider" />
+
+      <div class="mandala-input">
+        <span class="mandala-label">気づきを曼荼羅に刻む</span>
+        <div class="field-row">
+          <select id="catSelect" class="field-select">
+            <option value="core">佑哉（中心）</option>
+            <option value="vision">ビジョン・未来</option>
+            <option value="project">プロジェクト</option>
+            <option value="relation">人間関係</option>
+            <option value="daily">日常の記録</option>
+            <option value="insight">気づき・メモ</option>
+            <option value="past">過去・経験</option>
+            <option value="destiny">宿命・占術</option>
+            <option value="art">音楽・写真</option>
+            <option value="sense">感性・美意識</option>
+            <option value="thought">思考パターン</option>
+            <option value="value">価値観</option>
+            <option value="yuki">祐希ちゃん</option>
+          </select>
+          <input type="text" id="tagInput" class="field-input" placeholder="キーワード（任意）" />
+        </div>
+        <textarea id="noteInput" class="field-textarea" placeholder="気づいたこと・感じたことを書いて"></textarea>
+        <p class="field-help">Ctrl または ⌘ + Enter でも刻めます。</p>
+        <button class="add-btn" type="button" onclick="addNote()">曼荼羅に刻む</button>
+      </div>
+
+      <hr class="mandala-divider" />
+
+      <div class="mandala-log">
+        <span class="mandala-label">すべての記録</span>
+        <div class="log-toolbar">
+          <p id="logSummary" class="log-summary">0件の記録</p>
+          <select id="logFilter" class="field-select field-select-small" aria-label="記録をカテゴリで絞り込む">
+            <option value="all">すべて表示</option>
+            <option value="core">佑哉（中心）</option>
+            <option value="vision">ビジョン・未来</option>
+            <option value="project">プロジェクト</option>
+            <option value="relation">人間関係</option>
+            <option value="daily">日常の記録</option>
+            <option value="insight">気づき・メモ</option>
+            <option value="past">過去・経験</option>
+            <option value="destiny">宿命・占術</option>
+            <option value="art">音楽・写真</option>
+            <option value="sense">感性・美意識</option>
+            <option value="thought">思考パターン</option>
+            <option value="value">価値観</option>
+            <option value="yuki">祐希ちゃん</option>
+          </select>
+        </div>
+        <div id="logList" class="log-grid">
+          <p class="log-empty">まだ記録がありません</p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>黄昏きくりん</p>
+      <p class="footer-note">曼荼羅ダッシュボード — Designed by クロちゃん</p>
+      <nav class="footer-links" aria-label="フッターナビゲーション">
+        <a href="./index.html">サイトトップ</a>
+        <a href="./index.html#podcast">ポッドキャスト</a>
+      </nav>
+      <p class="footer-copyright">&copy; <span id="year"></span> Tasogare Kikurin</p>
+    </footer>
+
+    <script src="./script.js?v=4"></script>
+    <script src="./mandala.js?v=2"></script>
+  </body>
+</html>
