@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>占い部署｜Mandala株式会社きくりん</title>
+    <meta
+      name="description"
+      content="Mandala株式会社きくりんの占い部署。九紫火星、癸、数秘7/11、四柱推命、易経、タロットから今日のきくりんへの指針を出す参謀AI。"
+    />
+    <meta name="theme-color" content="#0d0f0e" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d0f0e;
+        --surface: #151b17;
+        --surface-light: #1a221d;
+        --text: #e6ece7;
+        --muted: #93a098;
+        --green: #1d9e75;
+        --green-deep: #0f5f46;
+        --gold: #b7a667;
+        --gold-soft: rgba(183, 166, 103, 0.24);
+        --line: rgba(230, 236, 231, 0.12);
+        --fire: #d68a4a;
+        --water: #78b7c5;
+        --shadow: rgba(0, 0, 0, 0.48);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        color: var(--text);
+        font-family: "Noto Serif JP", serif;
+        background:
+          radial-gradient(circle at 76% 8%, rgba(29, 158, 117, 0.12), transparent 28rem),
+          radial-gradient(circle at 10% 72%, rgba(183, 166, 103, 0.08), transparent 30rem),
+          var(--bg);
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+        content: "";
+        opacity: 0.32;
+        background-image:
+          repeating-linear-gradient(0deg, transparent 0 7px, rgba(255, 255, 255, 0.018) 8px),
+          repeating-linear-gradient(90deg, transparent 0 11px, rgba(29, 158, 117, 0.016) 12px);
+        pointer-events: none;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .grain {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        opacity: 0.5;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.035) 0 1px, transparent 1.5px) 0 0 / 13px 17px,
+          radial-gradient(circle at 80% 70%, rgba(29, 158, 117, 0.035) 0 1px, transparent 1.5px) 0 0 / 19px 23px;
+      }
+
+      .page {
+        width: min(1180px, calc(100% - 2.4rem));
+        margin: 0 auto;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        padding: 1.5rem 0 2.5rem;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: var(--muted);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.92rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 2.4rem;
+        height: 2.4rem;
+        place-items: center;
+        color: var(--text);
+        background: var(--green-deep);
+        font-family: "Noto Serif JP", serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        transform: rotate(-3deg);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        position: relative;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .nav-links a::after {
+        position: absolute;
+        right: 0;
+        bottom: -0.5rem;
+        left: 0;
+        height: 1px;
+        content: "";
+        background: var(--green);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 250ms ease;
+      }
+
+      .nav-links a:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.82fr);
+        gap: clamp(2rem, 6vw, 5.6rem);
+        align-items: center;
+        min-height: 72vh;
+        padding: clamp(3rem, 8vw, 6rem) 0 5rem;
+      }
+
+      .eyebrow,
+      .section-kicker {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin: 0;
+        color: var(--green);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before,
+      .section-kicker::before {
+        width: 2.5rem;
+        height: 1px;
+        content: "";
+        background: currentColor;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-weight: 500;
+      }
+
+      h1 {
+        margin: 1rem 0 0;
+        font-size: clamp(3rem, 6vw, 5.8rem);
+        letter-spacing: -0.06em;
+        line-height: 1.1;
+      }
+
+      .hero-subtitle {
+        margin: 1rem 0 0;
+        color: var(--text);
+        font-size: clamp(1.12rem, 2vw, 1.55rem);
+        letter-spacing: 0.06em;
+      }
+
+      .lead {
+        max-width: 42rem;
+        margin: 1.7rem 0 0;
+        color: var(--muted);
+        font-size: 0.96rem;
+        line-height: 2.1;
+      }
+
+      .date-card {
+        margin-top: 2rem;
+        padding: 1.15rem 1.3rem;
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(135deg, rgba(29, 158, 117, 0.08), transparent 55%),
+          var(--surface);
+      }
+
+      .date-label {
+        margin: 0 0 0.35rem;
+        color: var(--gold);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.74rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .today {
+        margin: 0;
+        font-size: 1.25rem;
+        letter-spacing: 0.08em;
+      }
+
+      .oracle-visual {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 31rem;
+      }
+
+      .oracle-frame {
+        position: relative;
+        width: min(31rem, 100%);
+        aspect-ratio: 1;
+        border: 1px solid rgba(183, 166, 103, 0.32);
+        background:
+          radial-gradient(circle at center, rgba(29, 158, 117, 0.12), transparent 62%),
+          linear-gradient(145deg, rgba(183, 166, 103, 0.05), transparent 60%),
+          var(--surface);
+        box-shadow: 0 20px 70px var(--shadow);
+      }
+
+      .oracle-frame::before,
+      .oracle-frame::after {
+        position: absolute;
+        inset: 2rem;
+        border: 1px solid rgba(29, 158, 117, 0.22);
+        content: "";
+        transform: rotate(45deg);
+      }
+
+      .oracle-frame::after {
+        inset: 5rem;
+        border-color: rgba(183, 166, 103, 0.26);
+        transform: rotate(0deg);
+      }
+
+      .oracle-circle {
+        position: absolute;
+        inset: 4rem;
+        border: 1px solid rgba(183, 166, 103, 0.34);
+        border-radius: 50%;
+      }
+
+      .oracle-circle::before,
+      .oracle-circle::after {
+        position: absolute;
+        inset: 3rem;
+        border: 1px solid rgba(29, 158, 117, 0.25);
+        border-radius: inherit;
+        content: "";
+      }
+
+      .oracle-circle::after {
+        inset: 6rem;
+        border-color: rgba(183, 166, 103, 0.32);
+      }
+
+      .compass {
+        position: absolute;
+        inset: 50%;
+        display: grid;
+        width: 9rem;
+        height: 9rem;
+        place-items: center;
+        border: 1px solid rgba(29, 158, 117, 0.56);
+        border-radius: 50%;
+        background: var(--green-deep);
+        color: var(--text);
+        font-size: 1.7rem;
+        letter-spacing: 0.2em;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 60px rgba(29, 158, 117, 0.18);
+      }
+
+      .trigram {
+        position: absolute;
+        color: rgba(183, 166, 103, 0.76);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+      }
+
+      .tri-top { top: 1.6rem; left: 50%; transform: translateX(-50%); }
+      .tri-right { top: 50%; right: 1.6rem; transform: translateY(-50%); }
+      .tri-bottom { bottom: 1.6rem; left: 50%; transform: translateX(-50%); }
+      .tri-left { top: 50%; left: 1.6rem; transform: translateY(-50%); }
+
+      .judgement-section {
+        padding: 0 0 5rem;
+      }
+
+      .judgement-card {
+        display: grid;
+        grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+        gap: clamp(1.6rem, 4vw, 3rem);
+        align-items: center;
+        padding: clamp(1.8rem, 4vw, 3rem);
+        border: 1px solid rgba(183, 166, 103, 0.32);
+        background:
+          linear-gradient(145deg, rgba(29, 158, 117, 0.1), transparent 56%),
+          var(--surface);
+      }
+
+      .decision-meter {
+        position: relative;
+        min-height: 12rem;
+        display: grid;
+        place-items: center;
+      }
+
+      .meter-ring {
+        position: absolute;
+        width: 11rem;
+        height: 11rem;
+        border: 1px solid var(--gold-soft);
+        border-radius: 50%;
+      }
+
+      .meter-ring::before,
+      .meter-ring::after {
+        position: absolute;
+        inset: 1.6rem;
+        border: 1px solid rgba(29, 158, 117, 0.24);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .meter-ring::after {
+        inset: 3.2rem;
+        border-color: rgba(183, 166, 103, 0.28);
+      }
+
+      .decision-word {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: var(--gold);
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        letter-spacing: 0.12em;
+      }
+
+      .decision-copy h2 {
+        margin: 0 0 1rem;
+        font-size: clamp(2rem, 4vw, 3.6rem);
+        letter-spacing: -0.04em;
+        line-height: 1.35;
+      }
+
+      .decision-copy p {
+        color: var(--muted);
+        line-height: 2;
+      }
+
+      .score-row {
+        display: grid;
+        grid-template-columns: 4rem 1fr 4rem;
+        gap: 1rem;
+        align-items: center;
+        margin-top: 1.3rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+      }
+
+      .score-track {
+        position: relative;
+        height: 1px;
+        background: var(--line);
+      }
+
+      .score-pointer {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0.9rem;
+        height: 0.9rem;
+        border: 1px solid var(--gold);
+        border-radius: 50%;
+        background: var(--bg);
+        transform: translate(-50%, -50%);
+      }
+
+      .reading-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .reading-card {
+        min-height: 18rem;
+        padding: clamp(1.5rem, 3vw, 2.2rem);
+        background:
+          linear-gradient(155deg, rgba(29, 158, 117, 0.055), transparent 65%),
+          var(--surface);
+      }
+
+      .reading-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .reading-label {
+        margin: 0;
+        color: var(--green);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.76rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .reading-symbol {
+        color: rgba(183, 166, 103, 0.48);
+        font-size: 2.7rem;
+        line-height: 1;
+      }
+
+      .reading-card h3 {
+        margin: 0 0 0.9rem;
+        color: var(--text);
+        font-size: 1.25rem;
+        line-height: 1.6;
+      }
+
+      .reading-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.95;
+      }
+
+      .strategist {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        gap: clamp(1.8rem, 4vw, 4rem);
+        align-items: start;
+        padding: 5rem 0 6rem;
+      }
+
+      .strategist-card {
+        position: sticky;
+        top: 1.5rem;
+        padding: clamp(1.6rem, 3vw, 2.4rem);
+        border: 1px solid var(--gold-soft);
+        background:
+          radial-gradient(circle at 80% 12%, rgba(183, 166, 103, 0.08), transparent 12rem),
+          var(--surface);
+      }
+
+      .strategist-card h2 {
+        margin: 1rem 0 1rem;
+        font-size: clamp(1.8rem, 4vw, 3.1rem);
+        line-height: 1.4;
+      }
+
+      .strategist-card p {
+        color: var(--muted);
+        line-height: 2;
+      }
+
+      .action-list {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .action-item {
+        padding: 1.2rem 1.4rem;
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .action-item span {
+        display: block;
+        margin-bottom: 0.45rem;
+        color: var(--gold);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .action-item p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+      }
+
+      .footer {
+        padding: 1rem 1.2rem 3.5rem;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .footer::before {
+        display: block;
+        width: 1px;
+        height: 4rem;
+        margin: 0 auto 1.5rem;
+        content: "";
+        background: var(--green);
+      }
+
+      .footer p {
+        margin: 0.25rem 0;
+      }
+
+      .footer-note {
+        color: var(--muted);
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.8rem;
+        justify-content: center;
+        margin-top: 1.8rem;
+      }
+
+      .footer-links a {
+        color: var(--muted);
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        transition: color 200ms ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--green);
+      }
+
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 700ms ease, transform 700ms ease;
+      }
+
+      [data-reveal].is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        [data-reveal] {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .hero,
+        .judgement-card,
+        .strategist {
+          grid-template-columns: 1fr;
+        }
+
+        .reading-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .strategist-card {
+          position: static;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .page {
+          width: min(100% - 2rem, 1180px);
+        }
+
+        .nav {
+          display: block;
+          padding-bottom: 1.4rem;
+        }
+
+        .nav-links {
+          gap: 1.15rem;
+          margin-top: 1.4rem;
+          overflow-x: auto;
+          padding-bottom: 0.4rem;
+          scrollbar-width: none;
+          white-space: nowrap;
+        }
+
+        .nav-links::-webkit-scrollbar {
+          display: none;
+        }
+
+        h1 {
+          font-size: 3rem;
+        }
+
+        .oracle-visual {
+          min-height: 25rem;
+        }
+
+        .oracle-frame {
+          width: min(24rem, 100%);
+        }
+
+        .oracle-frame::before,
+        .oracle-frame::after {
+          inset: 1.6rem;
+        }
+
+        .oracle-frame::after {
+          inset: 4rem;
+        }
+
+        .oracle-circle {
+          inset: 3.2rem;
+        }
+
+        .compass {
+          width: 7.6rem;
+          height: 7.6rem;
+          font-size: 1.35rem;
+        }
+
+        .reading-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .score-row {
+          grid-template-columns: 3rem 1fr 3rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <div class="page">
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a class="brand" href="./index.html" aria-label="黄昏きくりん ホーム">
+          <span class="brand-mark">黄昏</span>
+          <span>Tasogare Kikurin</span>
+        </a>
+        <div class="nav-links">
+          <a href="./index.html">サイトトップ</a>
+          <a href="./mandala-org.html">組織曼荼羅</a>
+          <a href="#readings">今日の占術</a>
+          <a href="#strategy">参謀の一手</a>
+        </div>
+      </nav>
+
+      <header class="hero">
+        <div class="hero-copy" data-reveal>
+          <p class="eyebrow">Divination Office</p>
+          <h1>占い部署</h1>
+          <p class="hero-subtitle">きくりんのための、孔明型参謀AI。</p>
+          <p class="lead">
+            九紫火星、癸、数秘7/11、四柱推命、易経、タロット。
+            占いを「当てる道具」ではなく、今日のペースと視点を整える天気予報として使います。
+            実行判断は、最後に佑哉さんと戦略部署が決める。
+          </p>
+          <div class="date-card">
+            <p class="date-label">Today</p>
+            <p class="today" id="todayText">--</p>
+          </div>
+        </div>
+
+        <div class="oracle-visual" data-reveal aria-hidden="true">
+          <div class="oracle-frame">
+            <div class="oracle-circle"></div>
+            <span class="trigram tri-top">乾</span>
+            <span class="trigram tri-right">離</span>
+            <span class="trigram tri-bottom">坎</span>
+            <span class="trigram tri-left">坤</span>
+            <div class="compass">占</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="judgement-section" aria-labelledby="decisionTitle">
+        <div class="judgement-card" data-reveal>
+          <div class="decision-meter">
+            <div class="meter-ring" aria-hidden="true"></div>
+            <p class="decision-word" id="decisionWord">--</p>
+          </div>
+          <div class="decision-copy">
+            <p class="section-kicker">Grand Strategy</p>
+            <h2 id="decisionTitle">今日、動くべきか。</h2>
+            <p id="decisionMessage">
+              今日の日付を読み込み、各占術から総合判断を出します。
+            </p>
+            <div class="score-row" aria-label="待つか動くかの目安">
+              <span>待つ</span>
+              <div class="score-track">
+                <span class="score-pointer" id="scorePointer"></span>
+              </div>
+              <span>動く</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="readings" aria-label="今日の占術">
+        <div class="reading-grid">
+          <article class="reading-card" data-reading="kyusei" data-reveal>
+            <div class="reading-top">
+              <p class="reading-label">Kyusei</p>
+              <span class="reading-symbol">九</span>
+            </div>
+            <h3>九紫火星</h3>
+            <p>--</p>
+          </article>
+
+          <article class="reading-card" data-reading="mizunoto" data-reveal>
+            <div class="reading-top">
+              <p class="reading-label">Day Stem</p>
+              <span class="reading-symbol">癸</span>
+            </div>
+            <h3>癸（みずのと）</h3>
+            <p>--</p>
+          </article>
+
+          <article class="reading-card" data-reading="numerology" data-reveal>
+            <div class="reading-top">
+              <p class="reading-label">Numerology</p>
+              <span class="reading-symbol">7/11</span>
+            </div>
+            <h3>数秘7/11</h3>
+            <p>--</p>
+          </article>
+
+          <article class="reading-card" data-reading="shichu" data-reveal>
+            <div class="reading-top">
+              <p class="reading-label">Four Pillars</p>
+              <span class="reading-symbol">干支</span>
+            </div>
+            <h3>四柱推命</h3>
+            <p>--</p>
+          </article>
+
+          <article class="reading-card" data-reading="iching" data-reveal>
+            <div class="reading-top">
+              <p class="reading-label">I Ching</p>
+              <span class="reading-symbol">易</span>
+            </div>
+            <h3>易経</h3>
+            <p>--</p>
+          </article>
+
+          <article class="reading-card" data-reading="tarot" data-reveal>
+            <div class="reading-top">
+              <p class="reading-label">Tarot</p>
+              <span class="reading-symbol">T</span>
+            </div>
+            <h3>タロット</h3>
+            <p>--</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="strategist" id="strategy">
+        <div class="strategist-card" data-reveal>
+          <p class="section-kicker">Komei AI</p>
+          <h2>参謀からの一手。</h2>
+          <p>
+            占い部署は、未来を固定する部署ではありません。
+            今日の風向きを読み、動く量・待つ勇気・整える順番を提案する部署です。
+          </p>
+        </div>
+        <div class="action-list" id="actionList" data-reveal>
+          <div class="action-item">
+            <span>Loading</span>
+            <p>今日の指針を読み込んでいます。</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <p>Mandala株式会社きくりん — 占い部署</p>
+      <p class="footer-note">断定ではなく、今日の天気予報として。</p>
+      <nav class="footer-links" aria-label="フッターナビゲーション">
+        <a href="./index.html">黄昏きくりん</a>
+        <a href="./mandala-org.html">組織曼荼羅</a>
+        <a href="./uranai.html">今日を再読込</a>
+      </nav>
+    </footer>
+
+    <script>
+      const stems = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+      const branches = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
+
+      const kyuseiReadings = [
+        "九紫火星の火が強まる日。見せる、言葉にする、外へ出すことに追い風。ただし焦りの火は短命なので、見せる前に一呼吸置く。",
+        "火は灯明として使う日。大きな勝負より、すでにある価値を照らす。Podcastやサイトの見せ方を整えると吉。",
+        "直感が鋭くなるぶん、言葉が強く出やすい。結論を急がず、先にメモへ落としてから発信する。",
+        "人に見つかる運。小さく公開、静かに共有、反応を見る。この順番なら火が味方になる。",
+      ];
+
+      const mizunotoReadings = [
+        "癸は雨露の水。大河のように押し切らず、静かに染み込ませる日。無理に突破せず、土台へ水を含ませる。",
+        "見えないところを潤す日。整理、下書き、関係性のケアが効く。表より裏方を整えると、後で芽が出る。",
+        "小さな違和感を拾う日。違和感は止まれの合図ではなく、流れを変える分岐点。言語化してから動く。",
+        "癸の知性が働く日。大きな宣言より、静かな観察。NotebookLMやメモを読み返すと答えが出やすい。",
+      ];
+
+      const numerologyReadings = [
+        "数秘7の内省と11の直感が同時に立つ日。答えは外より内側にある。ひとり時間を先に確保すると判断が澄む。",
+        "11のアンテナが立ちやすい日。偶然の言葉、目に入った色、ふとした違和感を軽く扱わない。そこに次のヒントがある。",
+        "7は検証、11はひらめき。今日は“感じたことを少しだけ確かめる”が最適解。全部やらなくていい。",
+        "精神性と現実の橋をかける日。理想を語るだけでなく、1つだけ形にする。小さな実装が流れを変える。",
+      ];
+
+      const ichingReadings = [
+        { name: "乾為天", text: "天の勢い。動くなら堂々と。ただし独断ではなく、志を明らかにして進む。" },
+        { name: "坤為地", text: "受け止める力。今日は育てる日。急がず、土台・環境・相手の状態を見る。" },
+        { name: "水火既済", text: "一度整ったものを崩さず守る日。新規拡大より、完成物の磨き込みが吉。" },
+        { name: "風火家人", text: "身近な場を整える日。会社・家・チームの約束を言葉にすると安心が増える。" },
+        { name: "雷地豫", text: "楽しさが動力になる日。重く考えすぎず、気分が乗る小さな一手から始める。" },
+        { name: "山水蒙", text: "学びの入口。分からなさを責めず、質問を立てる。今日は問いの質が成果になる。" },
+      ];
+
+      const tarotReadings = [
+        { name: "The Hermit / 隠者", text: "内なる灯りを持つ日。人に見せる前に、自分の中で納得する時間を取る。" },
+        { name: "The Magician / 魔術師", text: "道具は揃っている。完璧を待たず、手元の素材で一つ形にする。" },
+        { name: "Temperance / 節制", text: "混ぜ合わせる日。発信・占い・戦略を少しずつ合わせると、新しい文脈が生まれる。" },
+        { name: "The Star / 星", text: "未来の光を見る日。すぐ成果にしなくていい。希望の輪郭をメモに残す。" },
+        { name: "Justice / 正義", text: "判断軸を整える日。好き嫌いだけでなく、長期的に精神豊かかどうかで決める。" },
+        { name: "The Hanged Man / 吊るされた男", text: "待つことで見える日。押しても進まないことは、視点を変える合図。" },
+      ];
+
+      const actions = {
+        move: [
+          ["First Move", "午前中に1つだけ公開・共有・連絡をする。大きく出るより、扉を少し開ける。"],
+          ["Focus", "発信部署の案件を優先。Podcastかサイトのどちらかに、見える改善を1つ入れる。"],
+          ["Rule", "勢いが出ても詰め込みすぎない。今日の勝ちは“1つ進める”で十分。"],
+        ],
+        balance: [
+          ["First Move", "動く前に15分だけ整える。メモ、タスク、体調、空気感を見てから一手を選ぶ。"],
+          ["Focus", "戦略部署と占い部署の連携日。何をやるかより、何をやらないかを決める。"],
+          ["Rule", "迷ったら小さく試す。公開ではなく下書き、決定ではなく仮置きで進める。"],
+        ],
+        wait: [
+          ["First Move", "今日は無理に進めない。気になっていることを3行で書き出し、寝かせる。"],
+          ["Focus", "裏方の整備。リンク、メモ、フォルダ、未整理の言葉を静かに整える。"],
+          ["Rule", "待つことは停止ではなく準備。心がざわつく決定は、明日に回していい。"],
+        ],
+      };
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function sumDigits(value) {
+        return String(value)
+          .replace(/\D/g, "")
+          .split("")
+          .reduce((total, char) => total + Number(char), 0);
+      }
+
+      function reduceNumber(value) {
+        let current = value;
+        while (current > 9 && current !== 11 && current !== 22 && current !== 33) {
+          current = sumDigits(current);
+        }
+        return current;
+      }
+
+      function daySeed(date) {
+        return Number(`${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`);
+      }
+
+      function indexFor(seed, salt, length) {
+        return Math.abs((seed * 37 + salt * 97) % length);
+      }
+
+      function setReading(key, title, body) {
+        const card = document.querySelector(`[data-reading="${key}"]`);
+        card.querySelector("h3").textContent = title;
+        card.querySelector("p").textContent = body;
+      }
+
+      function getSexagenaryDay(date) {
+        const base = new Date(2000, 0, 1);
+        const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        const diff = Math.floor((today - base) / 86400000);
+        return {
+          stem: stems[(diff + 4) % 10],
+          branch: branches[(diff + 6) % 12],
+        };
+      }
+
+      function render() {
+        const now = new Date();
+        const seed = daySeed(now);
+        const weekday = ["日", "月", "火", "水", "木", "金", "土"][now.getDay()];
+        document.getElementById("todayText").textContent =
+          `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日（${weekday}）`;
+
+        const universalDay = reduceNumber(
+          sumDigits(`${now.getFullYear()}${now.getMonth() + 1}${now.getDate()}`)
+        );
+        const sexagenary = getSexagenaryDay(now);
+        const iching = ichingReadings[indexFor(seed, 5, ichingReadings.length)];
+        const tarot = tarotReadings[indexFor(seed, 6, tarotReadings.length)];
+
+        setReading(
+          "kyusei",
+          "九紫火星",
+          kyuseiReadings[indexFor(seed, 1, kyuseiReadings.length)]
+        );
+        setReading(
+          "mizunoto",
+          "癸（みずのと）",
+          mizunotoReadings[indexFor(seed, 2, mizunotoReadings.length)]
+        );
+        setReading(
+          "numerology",
+          `数秘7/11 × 今日の数 ${universalDay}`,
+          numerologyReadings[indexFor(seed + universalDay, 3, numerologyReadings.length)]
+        );
+        setReading(
+          "shichu",
+          `四柱推命：${sexagenary.stem}${sexagenary.branch}の日`,
+          `今日の干支は ${sexagenary.stem}${sexagenary.branch} として簡易算出。佑哉さんの癸の性質から見ると、勢いだけで押すより、流れを読み、相手と場に水を通してから動くのが吉。`
+        );
+        setReading("iching", `易経：${iching.name}`, iching.text);
+        setReading("tarot", `タロット：${tarot.name}`, tarot.text);
+
+        const moveScore =
+          42 +
+          ((seed % 23) - 11) +
+          (["甲", "丙", "戊", "庚", "壬"].includes(sexagenary.stem) ? 8 : -2) +
+          ([1, 3, 5, 8, 11].includes(universalDay) ? 10 : -6) +
+          (tarot.name.includes("魔術師") || tarot.name.includes("星") ? 8 : 0) -
+          (tarot.name.includes("吊るされた男") ? 14 : 0);
+
+        const normalized = Math.max(8, Math.min(92, moveScore));
+        const mode = normalized >= 62 ? "move" : normalized <= 39 ? "wait" : "balance";
+        const word = mode === "move" ? "動" : mode === "wait" ? "待" : "調";
+        const headline =
+          mode === "move"
+            ? "今日は、小さく動く日。"
+            : mode === "wait"
+              ? "今日は、待つことで整う日。"
+              : "今日は、整えてから動く日。";
+        const message =
+          mode === "move"
+            ? "外へ出す力が勝っています。大きな勝負ではなく、1つ公開する、1つ連絡する、1つ形にする。そのくらいの一手が流れを開きます。"
+            : mode === "wait"
+              ? "内側を整える力が勝っています。焦って決めるより、材料を集め、違和感を言葉にして、明日の自分に渡すのがよさそうです。"
+              : "動きたい火と、整えたい水が半々です。まず整える。そのあと小さく試す。今日の孔明は、慎重な前進を勧めています。";
+
+        document.getElementById("decisionWord").textContent = word;
+        document.getElementById("decisionTitle").textContent = headline;
+        document.getElementById("decisionMessage").textContent = message;
+        document.getElementById("scorePointer").style.left = `${normalized}%`;
+
+        const actionList = document.getElementById("actionList");
+        actionList.innerHTML = actions[mode]
+          .map(
+            ([label, text]) =>
+              `<div class="action-item"><span>${label}</span><p>${text}</p></div>`
+          )
+          .join("");
+      }
+
+      const revealTargets = document.querySelectorAll("[data-reveal]");
+      revealTargets.forEach((element) => element.setAttribute("data-reveal", ""));
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.16 }
+      );
+      revealTargets.forEach((element) => observer.observe(element));
+
+      render();
+    </script>
+  </body>
+</html>
